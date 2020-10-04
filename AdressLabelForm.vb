@@ -14,7 +14,6 @@ Public Class AdressLabelForm
     Private Sub Display_Label_Click(sender As Object, e As EventArgs) Handles Display_Label.Click
 
         Dim addressLabelString As New List(Of String)
-
         addressLabelString.Add(First_Name.Text & " ")
         addressLabelString.Add(Last_Name.Text & " ")
         addressLabelString.Add(Street_Address.Text & " ")
@@ -22,13 +21,14 @@ Public Class AdressLabelForm
         addressLabelString.Add(State.Text & " ")
         addressLabelString.Add(ZIP_Code.Text)
 
+        'Check that all text boxes have a value otherwise do not display and alert user-TJR
         Address_Display.Text = (addressLabelString(0) & addressLabelString(1) & vbNewLine & addressLabelString(2) & vbNewLine & addressLabelString(3) & addressLabelString(4) & addressLabelString(5))
 
     End Sub
 
     'Clears the users input for new data
     Private Sub Clear_Click(sender As Object, e As EventArgs) Handles Clear.Click
-
+        'Empty strings do not contain space - TJR
         First_Name.Text = " "
         Last_Name.Text = " "
         Street_Address.Text = " "
