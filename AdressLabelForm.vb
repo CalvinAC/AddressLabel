@@ -6,41 +6,75 @@
 
 Option Explicit On
 Option Strict On
+Option Compare Binary
 
 
 Public Class AdressLabelForm
 
-    'Displays text entered by the user into the text box
-    Private Sub Display_Label_Click(sender As Object, e As EventArgs) Handles Display_Label.Click
+    Function Verification() As Boolean
+        Dim goodData, data As Boolean
+        Dim zip As Integer
 
-        Dim addressLabelString As New List(Of String)
+        'Verifies text boxes are not left empty by the user
+        If FirstNameTextBox.Text = "" Then
+            MsgBox("Enter first name")
+        ElseIf LastNameTextBox.Text = "" Then
+            MsgBox("Enter last name")
+        ElseIf StreetAddressTextBox.Text = "" Then
+            MsgBox("Enter street adress")
+        ElseIf CityTextBox.Text = "" Then
+            MsgBox("Enter city")
+        ElseIf StateTextBox.Text = "" Then
+            MsgBox("Enter state")
+        ElseIf ZIPCodeTextBox.Text = "" Then
+            MsgBox("Enter zipcode")
+        Else
+            goodData = True
+        End If
 
-        addressLabelString.Add(First_Name.Text & " ")
-        addressLabelString.Add(Last_Name.Text & " ")
-        addressLabelString.Add(Street_Address.Text & " ")
-        addressLabelString.Add(City.Text & ",")
-        addressLabelString.Add(State.Text & " ")
-        addressLabelString.Add(ZIP_Code.Text)
+        If goodData = False Then
+            Exit Function
+        End If
 
-        Address_Display.Text = (addressLabelString(0) & addressLabelString(1) & vbNewLine & addressLabelString(2) & vbNewLine & addressLabelString(3) & addressLabelString(4) & addressLabelString(5))
+        'Verifies user entered an integer value for the zip code
+        Try
+            zip = CInt(ZIPCodeTextBox.Text)
+            data = True
+        Catch ex As Exception
+            MsgBox("Zipcode should be numeric value")
+            ZIPCodeTextBox.Clear()
+        End Try
+
+        Return goodData And data
+    End Function
+    Private Sub Display_Label_Click(sender As Object, e As EventArgs) Handles DisplayLabelButton.Click
+
+        'Displays text entered by the user into the text box
+        If Verification() = True Then
+            AddressDisplayLabel.Text = (FirstNameTextBox.Text & vbNewLine &
+            LastNameTextBox.Text & vbNewLine &
+            StreetAddressTextBox.Text & vbNewLine &
+            CityTextBox.Text & ", " & StateTextBox.Text & " " & ZIPCodeTextBox.Text)
+        Else
+
+        End If
 
     End Sub
 
-    'Clears the users input for new data
-    Private Sub Clear_Click(sender As Object, e As EventArgs) Handles Clear.Click
+    Private Sub Clear_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
 
-        First_Name.Text = " "
-        Last_Name.Text = " "
-        Street_Address.Text = " "
-        City.Text = " "
-        State.Text = " "
-        ZIP_Code.Text = " "
+        'Clears the users input for new data
+        FirstNameTextBox.Text = Nothing
+        LastNameTextBox.Text = Nothing
+        StreetAddressTextBox.Text = Nothing
+        CityTextBox.Text = Nothing
+        StateTextBox.Text = Nothing
+        ZIPCodeTextBox.Text = Nothing
 
-        Address_Display.Text = " "
+        AddressDisplayLabel.Text = Nothing
     End Sub
 
-    'Exits the program
-    Private Sub Exit_Button_Click(sender As Object, e As EventArgs) Handles Exit_Button.Click
+    Private Sub Exit_Button_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
         Me.Close()
     End Sub
 
